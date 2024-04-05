@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
-function AvatarMenu({ params }) {
+function AdminAvatarMenu({ params }) {
   const [state, setState] = useState(false);
   const profileRef = useRef();
+  const navigate = useNavigate();
+  const auth = params.role.toLowerCase();
 
   const name = params.user.split(" ");
   const Avatar = name[0].charAt(0) + name[1].charAt(0);
-  const auth = params.role.toLowerCase();
 
   const navigation = [
-    { title: "My Profile", path: `/${auth}/profile` },
     { title: "Dashboard", path: `/${auth}/dashboard` },
-    // { title: "Notifications", path: "/notifications" },
+    { title: "Profile", path: `/${auth}/profile` },
+    { title: "Settings", path: `/${auth}/settings` },
   ];
 
   const logoutHandler = () => {
@@ -29,7 +32,7 @@ function AvatarMenu({ params }) {
     document.addEventListener("click", handleDropDown);
   }, []);
   return (
-    <div className="relative border-t lg:border-none z-10">
+    <div className="relative border-t lg:border-none">
       <div className="">
         <button
           ref={profileRef}
@@ -44,18 +47,18 @@ function AvatarMenu({ params }) {
         </button>
       </div>
       <ul
-        className={`bg-white top-14 right-0 mt-6 space-y-6 lg:absolute lg:border lg:rounded-md lg:w-52 lg:shadow-md lg:space-y-0 lg:mt-0 ${
+        className={`bg-white top-14 right-0 z-10 mt-6 space-y-6 lg:absolute lg:border lg:rounded-md lg:w-52 lg:shadow-md lg:space-y-0 lg:mt-0 ${
           state ? "" : "lg:hidden"
         }`}
       >
         {navigation.map((item, idx) => (
           <li key={idx}>
-            <a
+            <Link
               className="block text-gray-600 hover:text-gray-900 lg:hover:bg-gray-50 lg:p-3"
-              href={item.path}
+              to={item.path}
             >
               {item.title}
-            </a>
+            </Link>
           </li>
         ))}
         <button
@@ -69,4 +72,4 @@ function AvatarMenu({ params }) {
   );
 }
 
-export default AvatarMenu;
+export default AdminAvatarMenu;

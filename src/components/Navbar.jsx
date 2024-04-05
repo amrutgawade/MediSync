@@ -10,8 +10,16 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 
 function Navbar() {
-  const { openModal, setOpenModal, setUser, setToken, setRole, token, user } =
-    useContext(UserContext);
+  const {
+    openModal,
+    setOpenModal,
+    setUser,
+    setToken,
+    setRole,
+    token,
+    user,
+    role,
+  } = useContext(UserContext);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const handleOpen = () => setOpenModal(true);
@@ -86,7 +94,7 @@ function Navbar() {
                 setEmail("");
                 setPassword("");
                 setOpenModal(false);
-                navigate("/dashboard");
+                navigate(`/${payload.authorities.toLowerCase()}/dashboard`);
               })
               .catch((err) => {
                 console.log(err);
@@ -103,8 +111,6 @@ function Navbar() {
       .catch((err) => {
         console.log(err);
       });
-
-    console.log(response);
   };
   return (
     <header>
@@ -118,7 +124,7 @@ function Navbar() {
           <p>+91 987654321</p>
         </div>
       </nav>
-      <div className="h-16 shadow-md bg-white flex items-center justify-between px-16">
+      <div className="h-16 shadow-2xl bg-white flex items-center justify-between px-16">
         <Link to={"/"} className="font-extrabold text-2xl">
           <span className="text-green-500">Medi</span>Sync
         </Link>
@@ -135,7 +141,7 @@ function Navbar() {
             </Link>
           ))}
           {token ? (
-            <AvatarMenu params={{ user, setUser, setToken }} />
+            <AvatarMenu params={{ user, role, setUser, setToken }} />
           ) : (
             <button
               onClick={handleOpen}
