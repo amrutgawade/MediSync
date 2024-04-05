@@ -8,16 +8,16 @@ function AvatarMenu({ params }) {
   const Avatar = name[0].charAt(0) + name[1].charAt(0);
 
   const navigation = [
-    { title: "My Profile", path: "javascript:void(0)" },
-    { title: "Orders", path: "javascript:void(0)" },
-    { title: "Notifications", path: "javascript:void(0)" },
+    { title: "My Profile", path: "/profile" },
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Notifications", path: "/notifications" },
   ];
 
   const logoutHandler = () => {
     localStorage.clear();
     params.setUser(null);
     params.setToken(null);
-    navigate("/admin");
+    navigate("/");
     toast.success("Logout Successful");
   };
 
@@ -28,7 +28,7 @@ function AvatarMenu({ params }) {
     document.addEventListener("click", handleDropDown);
   }, []);
   return (
-    <div className="relative border-t lg:border-none">
+    <div className="relative border-t lg:border-none z-10">
       <div className="">
         <button
           ref={profileRef}
