@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../Utility/axiosApiConfig";
 
@@ -11,9 +11,9 @@ function AddPatient() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
-  const [allergy, setAllergy] = useState([]);
-  const [surgeries, setSurgeries] = useState([]);
-  const [current_Medicine, setCurrent_Medicine] = useState([]);
+  const [allergy, setAllergy] = useState([""]);
+  const [surgeries, setSurgeries] = useState([""]);
+  const [current_Medicine, setCurrent_Medicine] = useState([""]);
   const addAllergyHandler = () => {
     setAllergy([...allergy, [""]]);
   };
@@ -21,7 +21,7 @@ function AddPatient() {
     setSurgeries([...surgeries, [""]]);
   };
   const addCurrent_MedicineHandler = () => {
-    setAllergy([...current_Medicine, [""]]);
+    setCurrent_Medicine([...current_Medicine, [""]]);
   };
 
   const removeAllergyHandler = (index) => {
@@ -73,7 +73,7 @@ function AddPatient() {
     };
     console.log(petientData);
     // Axios request
-    const response = await axios
+    await axiosInstance
       .post("http://localhost:8081/api/patient/addPatient", petientData)
       .then((res) => {
         console.log(res.data);
@@ -227,50 +227,47 @@ function AddPatient() {
               </button>
             </div>
 
-            {allergy.map((data, i) => {
-              return (
-                <div
-                  className="flex items-center justify-between gap-x-5 mt-4"
-                  key={i}
-                >
-                  <div>
-                    <label htmlFor="width" className="block mb-3 text-black">
-                      Allergy
-                    </label>
-                    <input
-                      type="text"
-                      name="Allergy"
-                      value={data}
-                      onChange={(e) => inputChangeHandler(e, i)}
-                      className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
-                      placeholder="Allergy"
-                    />
-                  </div>
-
-                  <button
-                    onClick={() => removeAllergyHandler(i)}
-                    className="self-end mb-2 px-3 py-2 border-none outline-none text-white rounded bg-red-500"
-                  >
-                    Remove
-                  </button>
-                </div>
-              );
-            })}
-
-            <div className="flex justify-between items-center -mx-8">
-              <h3 className="border-b py-4 px-7 text-lg font-medium">
-                Patient Current Medicines
-              </h3>
-              <button
-                onClick={(e) => addCurrent_MedicineHandler(e)}
-                className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
+            {allergy.map((data, i) => (
+              <div
+                className="flex items-center justify-between gap-x-5 mt-4"
+                key={i}
               >
-                Add Current Medicines
-              </button>
-            </div>
+                <div>
+                  <label htmlFor="width" className="block mb-3 text-black">
+                    Allergy
+                  </label>
+                  <input
+                    type="text"
+                    name="Allergy"
+                    value={allergy[i]}
+                    onChange={(e) => inputChangeHandler(e, i)}
+                    className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
+                    placeholder="Allergy"
+                  />
+                </div>
 
-            {current_Medicine.map((data, i) => {
-              return (
+                <button
+                  onClick={() => removeAllergyHandler(i)}
+                  className="self-end mb-2 px-3 py-2 border-none outline-none text-white rounded bg-red-500"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            {/* <div>
+              <div className="flex justify-between items-center -mx-8">
+                <h3 className="border-b py-4 px-7 text-lg font-medium">
+                  Patient Current Medicines
+                </h3>
+                <button
+                  onClick={(e) => addCurrent_MedicineHandler(e)}
+                  className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
+                >
+                  Add Current Medicines
+                </button>
+              </div>
+
+              {current_Medicine.map((data, i) => (
                 <div
                   className="flex items-center justify-between gap-x-5 mt-4"
                   key={i}
@@ -282,7 +279,7 @@ function AddPatient() {
                     <input
                       type="text"
                       name="Current Medicines"
-                      value={data}
+                      value={current_Medicine[i]}
                       onChange={(e) => inputChangeCurrent_MedicineHandler(e, i)}
                       className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
                       placeholder="Current Medicines"
@@ -296,23 +293,63 @@ function AddPatient() {
                     Remove
                   </button>
                 </div>
-              );
-            })}
+              ))}
+            </div> */}
+            <div>
+              <div className="flex justify-between items-center -mx-8">
+                <h3 className="border-b py-4 px-7 text-lg font-medium">
+                  Patient Current Medicines
+                </h3>
+                <button
+                  onClick={(e) => addCurrent_MedicineHandler(e)}
+                  className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
+                >
+                  Add Current Medicines
+                </button>
+              </div>
 
-            <div className="flex justify-between items-center -mx-8">
-              <h3 className="border-b py-4 px-7 text-lg font-medium">
-                Patient Surgeries
-              </h3>
-              <button
-                onClick={(e) => addSurgeriesHandler(e)}
-                className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
-              >
-                Add Surgeries
-              </button>
+              {current_Medicine.map((data, i) => (
+                <div
+                  className="flex items-center justify-between gap-x-5 mt-4"
+                  key={i}
+                >
+                  <div>
+                    <label htmlFor="width" className="block mb-3 text-black">
+                      Current Medicines
+                    </label>
+                    <input
+                      type="text"
+                      name="Current Medicines"
+                      value={current_Medicine[i]}
+                      onChange={(e) => inputChangeCurrent_MedicineHandler(e, i)}
+                      className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
+                      placeholder="Current Medicines"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => removeCurrent_MedicineHandler(i)}
+                    className="self-end mb-2 px-3 py-2 border-none outline-none text-white rounded bg-red-500"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
             </div>
+            <div>
+              <div className="flex justify-between items-center -mx-8">
+                <h3 className="border-b py-4 px-7 text-lg font-medium">
+                  Patient Surgeries
+                </h3>
+                <button
+                  onClick={(e) => addSurgeriesHandler(e)}
+                  className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
+                >
+                  Add Surgeries
+                </button>
+              </div>
 
-            {surgeries.map((data, i) => {
-              return (
+              {surgeries.map((data, i) => (
                 <div
                   className="flex items-center justify-between gap-x-5 mt-4"
                   key={i}
@@ -324,7 +361,7 @@ function AddPatient() {
                     <input
                       type="text"
                       name="Surgeries"
-                      value={data}
+                      value={surgeries[i]}
                       onChange={(e) => inputChangeSurgeriesHandler(e, i)}
                       className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
                       placeholder="Surgeries"
@@ -338,8 +375,8 @@ function AddPatient() {
                     Remove
                   </button>
                 </div>
-              );
-            })}
+              ))}
+            </div>
 
             <div className="flex gap-5 mt-4">
               <button
