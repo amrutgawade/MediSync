@@ -11,9 +11,9 @@ function AddPatient() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
-  const [allergy, setAllergy] = useState([""]);
-  const [surgeries, setSurgeries] = useState([""]);
-  const [current_Medicine, setCurrent_Medicine] = useState([""]);
+  const [allergy, setAllergy] = useState([]);
+  const [surgeries, setSurgeries] = useState([]);
+  const [current_Medicine, setCurrent_Medicine] = useState([]);
   const addAllergyHandler = () => {
     setAllergy([...allergy, [""]]);
   };
@@ -25,38 +25,38 @@ function AddPatient() {
   };
 
   const removeAllergyHandler = (index) => {
-    const newSizes = [...allergy];
-    newSizes.splice(index, 1);
-    setAllergy(newSizes);
+    const newAllergy = [...allergy];
+    newAllergy.splice(index, 1);
+    setAllergy(newAllergy);
   };
   const removeSurgeriesHandler = (index) => {
-    const newSizes = [...surgeries];
-    newSizes.splice(index, 1);
-    setSurgeries(newSizes);
+    const newSurgery = [...surgeries];
+    newSurgery.splice(index, 1);
+    setSurgeries(newSurgery);
   };
   const removeCurrent_MedicineHandler = (index) => {
-    const newSizes = [...current_Medicine];
-    newSizes.splice(index, 1);
-    setCurrent_Medicine(newSizes);
+    const newCurrentMedicine = [...current_Medicine];
+    newCurrentMedicine.splice(index, 1);
+    setCurrent_Medicine(newCurrentMedicine);
   };
 
   const inputChangeHandler = (e, index) => {
     const { value } = e.target;
-    const newSizes = [...allergy];
-    newSizes[index] = value;
-    setAllergy(newSizes);
+    const newAllergy = [...allergy];
+    newAllergy[index] = value;
+    setAllergy(newAllergy);
   };
   const inputChangeCurrent_MedicineHandler = (e, index) => {
     const { value } = e.target;
-    const newSizes = [...allergy];
-    newSizes[index] = value;
-    setCurrent_Medicine(newSizes);
+    const newSurgery = [...current_Medicine];
+    newSurgery[index] = value;
+    setCurrent_Medicine(newSurgery);
   };
   const inputChangeSurgeriesHandler = (e, index) => {
     const { value } = e.target;
-    const newSizes = [...allergy];
-    newSizes[index] = value;
-    setSurgeries(newSizes);
+    const newCurrentMedicine = [...surgeries];
+    newCurrentMedicine[index] = value;
+    setSurgeries(newCurrentMedicine);
   };
   const addPetientHandler = async () => {
     const petientData = {
@@ -240,7 +240,7 @@ function AddPatient() {
                     <input
                       type="text"
                       name="Allergy"
-                      value={allergy[i]}
+                      value={data}
                       onChange={(e) => inputChangeHandler(e, i)}
                       className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
                       placeholder="Allergy"
@@ -265,7 +265,7 @@ function AddPatient() {
                 onClick={(e) => addCurrent_MedicineHandler(e)}
                 className="px-3 py-2 mr-8 border-none outline-none text-white rounded bg-indigo-500"
               >
-                Add Allergy
+                Add Current Medicines
               </button>
             </div>
 
@@ -282,7 +282,7 @@ function AddPatient() {
                     <input
                       type="text"
                       name="Current Medicines"
-                      value={current_Medicine[i]}
+                      value={data}
                       onChange={(e) => inputChangeCurrent_MedicineHandler(e, i)}
                       className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
                       placeholder="Current Medicines"
@@ -324,7 +324,7 @@ function AddPatient() {
                     <input
                       type="text"
                       name="Surgeries"
-                      value={surgeries[i]}
+                      value={data}
                       onChange={(e) => inputChangeSurgeriesHandler(e, i)}
                       className="w-full px-5 py-3 outline-none border rounded hover:border-indigo-500 focus:border-indigo-500"
                       placeholder="Surgeries"
