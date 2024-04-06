@@ -23,13 +23,13 @@ function Dashboard() {
           />
           <div className="mt-4 flex items-end justify-between w-full">
             <div>
-              <h4 className="text-2xl font-bold">₹350K</h4>
-              <span className="text-sm font-medium">Total Sales</span>
+              <h4 className="text-2xl font-bold">35</h4>
+              <span className="text-sm font-medium">Total Doctors</span>
             </div>
-            <div className="flex items-center gap-1 text-sm font-medium">
+            {/* <div className="flex items-center gap-1 text-sm font-medium">
               <span>0.43%</span>
               <LuArrowUp />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-col items-start justify-center p-6 h-fit w-auto bg-white shadow rounded">
@@ -39,13 +39,13 @@ function Dashboard() {
           />
           <div className="mt-4 flex items-end justify-between w-full">
             <div>
-              <h4 className="text-2xl font-bold">11</h4>
-              <span className="text-sm font-medium">Pending Orders</span>
+              <h4 className="text-2xl font-bold">110</h4>
+              <span className="text-sm font-medium">Pending Records</span>
             </div>
-            <div className="flex items-center gap-1 text-sm font-medium">
+            {/* <div className="flex items-center gap-1 text-sm font-medium">
               <span>4.35%</span>
               <LuArrowUp />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-col items-start justify-center p-6 h-fit w-auto bg-white shadow rounded">
@@ -55,13 +55,13 @@ function Dashboard() {
           />
           <div className="mt-4 flex items-end justify-between w-full">
             <div>
-              <h4 className="text-2xl font-bold">2.450</h4>
-              <span className="text-sm font-medium">Total Product</span>
+              <h4 className="text-2xl font-bold">20</h4>
+              <span className="text-sm font-medium">Total Patients</span>
             </div>
-            <div className="flex items-center gap-1 text-sm font-medium">
+            {/* <div className="flex items-center gap-1 text-sm font-medium">
               <span>2.59%</span>
               <LuArrowUp />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-col items-start justify-center p-6 h-fit w-auto bg-white shadow rounded">
@@ -71,13 +71,13 @@ function Dashboard() {
           />
           <div className="mt-4 flex items-end justify-between w-full">
             <div>
-              <h4 className="text-2xl font-bold">3.456</h4>
-              <span className="text-sm font-medium">Total Users</span>
+              <h4 className="text-2xl font-bold">3</h4>
+              <span className="text-sm font-medium">Total Assistants</span>
             </div>
-            <div className="flex items-center gap-1 text-sm font-medium">
+            {/* <div className="flex items-center gap-1 text-sm font-medium">
               <span>0.95%</span>
               <LuArrowDown />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

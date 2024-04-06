@@ -42,12 +42,12 @@ function Sidebar() {
       path: `/${auth}/profile`,
       icon: <HiOutlineUserCircle />,
     },
-    {
-      key: "addAssistant",
-      label: "Add Assistant",
-      path: `/${auth}/addAssistant`,
-      icon: <HiOutlineUserAdd />,
-    },
+    // {
+    //   key: "addAssistant",
+    //   label: "Add Assistant",
+    //   path: `/${auth}/addAssistant`,
+    //   icon: <HiOutlineUserAdd />,
+    // },
     {
       key: "patients",
       label: "Patients",
@@ -134,6 +134,24 @@ function Sidebar() {
             {isExpanded && <span>{item.label}</span>}
           </Link>
         ))}
+        {role == "Doctor" && (
+          <Link
+            to={`/${auth}/addAssistant`}
+            className={
+              `${
+                pathname === `/${auth}/addAssistant`
+                  ? "bg-slate-800"
+                  : "text-slate-400"
+              } flex items-center gap-6 py-2 rounded hover:bg-slate-800 hover:text-white active:bg-slate-700 text-base` +
+              (isExpanded ? " px-6" : " justify-center px-0")
+            }
+          >
+            <span className="text-2xl">
+              <HiOutlineUserAdd />
+            </span>
+            {isExpanded && <span>Add Assistant</span>}
+          </Link>
+        )}
       </div>
       <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-600">
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (

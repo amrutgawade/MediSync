@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
+import { axiosInstance } from "./Utility/axiosApiConfig";
 
 function Navbar() {
   const {
@@ -43,74 +44,214 @@ function Navbar() {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
+  const [userRole, setUserRole] = useState("");
   const [password, setPassword] = useState("");
 
   const inputChangeHandler = (id, value) => {
     if (id === "email") {
       setEmail(value);
+    } else if (id === "userRole") {
+      setUserRole(value);
     } else if (id === "password") {
       setPassword(value);
     }
   };
 
   const loginHandler = async () => {
-    await axios
-      .post("http://localhost:8081/auth/signin", {
-        email,
-        password,
-      })
-      .then(async (res) => {
-        const { jwt } = res.data;
-        console.log(jwt);
-        // Decode JWT token to extract email & authorities
-        try {
-          const [, payloadBase64] = jwt.split(".");
-          const payloadJson = atob(payloadBase64);
-          const payload = JSON.parse(payloadJson);
-          // console.log("Email:", payload.email);
-          console.log("Authorities:", payload.authorities);
-          localStorage.setItem("auth", payload.authorities);
-          setRole(payload.authorities);
-          if (res.data.message == "SignIn Successfull" && res.status == 201) {
-            const result = await axios
-              .get("http://localhost:8081/api/doctor/profile", {
-                headers: {
-                  Authorization: `Bearer ${jwt}`,
-                },
-              })
-              .then((res) => {
-                console.log(res.data);
-                localStorage.setItem(
-                  "user",
-                  res.data.first_name + " " + res.data.last_name
-                );
-                setUser(
-                  res.data.first_name + " " + res.data.last_name ||
-                    localStorage.getItem("user")
-                );
-                localStorage.setItem("token", jwt);
-                setToken(jwt || localStorage.getItem("token"));
-                toast.success("Login Success");
-                setEmail("");
-                setPassword("");
-                setOpenModal(false);
-                navigate(`/${payload.authorities.toLowerCase()}/dashboard`);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            // console.log(result);
-          } else {
-            toast.error("Unauthorized Access");
-          }
-        } catch (error) {
-          console.error("Error decoding JWT:", error);
-          toast.error("Invalid Username or Password");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    switch (userRole) {
+      case "Doctor":
+        await axios
+          .post("http://localhost:8081/auth/signin", {
+            email,
+            password,
+          })
+          .then(async (res) => {
+            const { jwt } = res.data;
+            console.log(jwt);
+            // Decode JWT token to extract email & authorities
+            try {
+              const [, payloadBase64] = jwt.split(".");
+              const payloadJson = atob(payloadBase64);
+              const payload = JSON.parse(payloadJson);
+              // console.log("Email:", payload.email);
+              console.log("Authorities:", payload.authorities);
+              localStorage.setItem("auth", payload.authorities);
+              setRole(payload.authorities);
+              if (
+                res.data.message == "SignIn Successfull" &&
+                res.status == 201
+              ) {
+                const result = await axios
+                  .get("http://localhost:8081/api/doctor/profile", {
+                    headers: {
+                      Authorization: `Bearer ${jwt}`,
+                    },
+                  })
+                  .then((res) => {
+                    console.log(res.data);
+                    localStorage.setItem(
+                      "user",
+                      res.data.first_name + " " + res.data.last_name
+                    );
+                    setUser(
+                      res.data.first_name + " " + res.data.last_name ||
+                        localStorage.getItem("user")
+                    );
+                    localStorage.setItem("token", jwt);
+                    setToken(jwt || localStorage.getItem("token"));
+                    toast.success("Login Success");
+                    setEmail("");
+                    setPassword("");
+                    setOpenModal(false);
+                    navigate(`/${payload.authorities.toLowerCase()}/dashboard`);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+                // console.log(result);
+              } else {
+                toast.error("Unauthorized Access");
+              }
+            } catch (error) {
+              console.error("Error decoding JWT:", error);
+              toast.error("Invalid Username or Password");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        break;
+
+      case "Assistant":
+        await axios
+          .post("http://localhost:8081/auth/assistant/signin", {
+            email,
+            password,
+          })
+          .then(async (res) => {
+            const { jwt } = res.data;
+            console.log(jwt);
+            // Decode JWT token to extract email & authorities
+            try {
+              const [, payloadBase64] = jwt.split(".");
+              const payloadJson = atob(payloadBase64);
+              const payload = JSON.parse(payloadJson);
+              // console.log("Email:", payload.email);
+              console.log("Authorities:", payload.authorities);
+              localStorage.setItem("auth", payload.authorities);
+              setRole(payload.authorities);
+              if (
+                res.data.message == "SignIn Successfull" &&
+                res.status == 201
+              ) {
+                const result = await axios
+                  .get("http://localhost:8081/api/assistant/profile", {
+                    headers: {
+                      Authorization: `Bearer ${jwt}`,
+                    },
+                  })
+                  .then((res) => {
+                    console.log(res.data);
+                    localStorage.setItem(
+                      "user",
+                      res.data.first_name + " " + res.data.last_name
+                    );
+                    setUser(
+                      res.data.first_name + " " + res.data.last_name ||
+                        localStorage.getItem("user")
+                    );
+                    localStorage.setItem("token", jwt);
+                    setToken(jwt || localStorage.getItem("token"));
+                    toast.success("Login Success");
+                    setEmail("");
+                    setPassword("");
+                    setOpenModal(false);
+                    navigate(`/${payload.authorities.toLowerCase()}/dashboard`);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+                // console.log(result);
+              } else {
+                toast.error("Unauthorized Access");
+              }
+            } catch (error) {
+              console.error("Error decoding JWT:", error);
+              toast.error("Invalid Username or Password");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        break;
+
+      case "Patient":
+        await axios
+          .post("http://localhost:8081/auth/patient/signin", {
+            email,
+            password,
+          })
+          .then(async (res) => {
+            const { jwt } = res.data;
+            console.log(jwt);
+            // Decode JWT token to extract email & authorities
+            try {
+              const [, payloadBase64] = jwt.split(".");
+              const payloadJson = atob(payloadBase64);
+              const payload = JSON.parse(payloadJson);
+              // console.log("Email:", payload.email);
+              console.log("Authorities:", payload.authorities);
+              localStorage.setItem("auth", payload.authorities);
+              setRole(payload.authorities);
+              if (
+                res.data.message == "SignIn Successfull" &&
+                res.status == 201
+              ) {
+                console.log({ email });
+                await axios
+                  .get("http://localhost:8081/api/patient/profile", {
+                    headers: {
+                      Authorization: `Bearer ${jwt}`,
+                    },
+                  })
+                  .then((res) => {
+                    console.log(res.data);
+                    localStorage.setItem(
+                      "user",
+                      res.data.patient_Name + " " + res.data.patient_Name
+                    );
+                    setUser(
+                      res.data.patient_Name + " " + res.data.patient_Name ||
+                        localStorage.getItem("user")
+                    );
+                    localStorage.setItem("token", jwt);
+                    setToken(jwt || localStorage.getItem("token"));
+                    toast.success("Login Success");
+                    setEmail("");
+                    setPassword("");
+                    setOpenModal(false);
+                    navigate(`/${payload.authorities.toLowerCase()}/dashboard`);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+                // console.log(result);
+              } else {
+                toast.error("Unauthorized Access");
+              }
+            } catch (error) {
+              console.error("Error decoding JWT:", error);
+              toast.error("Invalid Username or Password");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        break;
+      default:
+        toast.error("Please Select Role");
+        break;
+    }
   };
   return (
     <header>
@@ -193,7 +334,22 @@ function Navbar() {
                   />
                 )}
               </div>
-
+              <div>
+                <label className="font-medium">Role</label>
+                <select
+                  onChange={(e) =>
+                    inputChangeHandler("userRole", e.target.value)
+                  }
+                  value={userRole}
+                  required
+                  className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-red-600 shadow-sm rounded-lg"
+                >
+                  <option value="">Select Role</option>
+                  <option value="Patient">Patient</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Assistant">Assistant</option>
+                </select>
+              </div>
               <button
                 onClick={loginHandler}
                 className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
