@@ -43,17 +43,11 @@ function Sidebar() {
       icon: <HiOutlineUserCircle />,
     },
     // {
-    //   key: "addAssistant",
-    //   label: "Add Assistant",
-    //   path: `/${auth}/addAssistant`,
-    //   icon: <HiOutlineUserAdd />,
+    //   key: "patients",
+    //   label: "Patients",
+    //   path: `/${auth}/patients`,
+    //   icon: <HiOutlineUsers />,
     // },
-    {
-      key: "patients",
-      label: "Patients",
-      path: `/${auth}/patients`,
-      icon: <HiOutlineUsers />,
-    },
     {
       key: "complaints",
       label: "Complaints",
@@ -134,6 +128,24 @@ function Sidebar() {
             {isExpanded && <span>{item.label}</span>}
           </Link>
         ))}
+        {role == "Assistant" && (
+          <Link
+            to={`/${auth}/addPatient`}
+            className={
+              `${
+                pathname === `/${auth}/addPatient`
+                  ? "bg-slate-800"
+                  : "text-slate-400"
+              } flex items-center gap-6 py-2 rounded hover:bg-slate-800 hover:text-white active:bg-slate-700 text-base` +
+              (isExpanded ? " px-6" : " justify-center px-0")
+            }
+          >
+            <span className="text-2xl">
+              <HiOutlineUserAdd />
+            </span>
+            {isExpanded && <span>Add Patient</span>}
+          </Link>
+        )}
         {role == "Doctor" && (
           <Link
             to={`/${auth}/addAssistant`}
@@ -150,6 +162,24 @@ function Sidebar() {
               <HiOutlineUserAdd />
             </span>
             {isExpanded && <span>Add Assistant</span>}
+          </Link>
+        )}
+        {(role == "Doctor" || role == "Assistant") && (
+          <Link
+            to={`/${auth}/patients`}
+            className={
+              `${
+                pathname === `/${auth}/patients`
+                  ? "bg-slate-800"
+                  : "text-slate-400"
+              } flex items-center gap-6 py-2 rounded hover:bg-slate-800 hover:text-white active:bg-slate-700 text-base` +
+              (isExpanded ? " px-6" : " justify-center px-0")
+            }
+          >
+            <span className="text-2xl">
+              <HiOutlineUsers />
+            </span>
+            {isExpanded && <span>Patients</span>}
           </Link>
         )}
       </div>

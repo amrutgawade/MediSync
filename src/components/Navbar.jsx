@@ -39,7 +39,7 @@ function Navbar() {
   const navLinks = [
     { link: "/", title: "Home" },
     { link: "/about", title: "About US" },
-    { link: "/services", title: "Services" },
+    // { link: "/services", title: "Services" },
   ];
 
   const [passwordVisible, setPasswordVisible] = useState(false);

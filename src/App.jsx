@@ -15,6 +15,7 @@ import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Error404 from "./components/Error404";
 import AddAssistant from "./components/Assistant/AddAssistant";
+import AddPatient from "./components/Patients/AddPatient";
 
 function App() {
   const { token, role } = useContext(UserContext);
@@ -35,6 +36,7 @@ function App() {
               <Route path={`/${role.toLowerCase()}/dashboard`} element={<Dashboard />} />
               <Route path={`/${role.toLowerCase()}/profile`} element={<Profile />} />
               <Route path={`/${role.toLowerCase()}/addAssistant`} element={<AddAssistant />} />
+              <Route path={`/${role.toLowerCase()}/addPatient`} element={<AddPatient />} />
               <Route path={`/${role.toLowerCase()}/complaints`} element={<Complaints />} />
               <Route path={`/${role.toLowerCase()}/patients`} element={<Patients />} />
             </>

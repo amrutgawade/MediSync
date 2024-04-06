@@ -7,7 +7,7 @@ import { Box, Modal } from "@mui/material";
 import { axiosInstance } from "../Utility/axiosApiConfig";
 
 function Patients() {
-  const { token } = useContext(UserContext);
+  const { token, role } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
   const [patient, setPatient] = useState({});
   const [search, setSearch] = useState("");
@@ -173,12 +173,15 @@ function Patients() {
                       {item.address}
                     </td>
                     <td className="text-center px-6 whitespace-nowrap space-x-2 gap-1">
-                      <Link
-                        className="py-2 px-3 font-medium text-indigo-600 border hover:border-indigo-500 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                        to={`/admin/products/update/${item.id}`}
-                      >
-                        Edit
-                      </Link>
+                      {role == "Assistant" && (
+                        <Link
+                          className="py-2 px-3 font-medium text-indigo-600 border hover:border-indigo-500 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                          to={`/admin/products/update/${item.id}`}
+                        >
+                          Edit
+                        </Link>
+                      )}
+
                       <button
                         onClick={() => {
                           setOpenModal(true);
@@ -228,16 +231,19 @@ function Patients() {
             <p className="font-medium">Allergies:</p>
             <ul>
               {patient?.allergy?.map((item, idx) => (
-                <li className="list-disc ml-8" key={idx}>{item}</li>
+                <li className="list-disc ml-8" key={idx}>
+                  {item}
+                </li>
               ))}
             </ul>
             <p className="font-medium">Surgeries:</p>
             <ul>
               {patient?.surgeries?.map((item, idx) => (
-                <li className="list-disc ml-8" key={idx}>{item}</li>
+                <li className="list-disc ml-8" key={idx}>
+                  {item}
+                </li>
               ))}
             </ul>
-  
           </div>
 
           <button
