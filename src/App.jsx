@@ -14,10 +14,10 @@ import Services from "./components/Services";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Error404 from "./components/Error404";
+import AddAssistant from "./components/Assistant/AddAssistant";
 
 function App() {
   const { token, role } = useContext(UserContext);
-  // const auth = role.toLowerCase();
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -34,6 +34,7 @@ function App() {
             <>
               <Route path={`/${role.toLowerCase()}/dashboard`} element={<Dashboard />} />
               <Route path={`/${role.toLowerCase()}/profile`} element={<Profile />} />
+              <Route path={`/${role.toLowerCase()}/addAssistant`} element={<AddAssistant />} />
               <Route path={`/${role.toLowerCase()}/complaints`} element={<Complaints />} />
               <Route path={`/${role.toLowerCase()}/patients`} element={<Patients />} />
             </>

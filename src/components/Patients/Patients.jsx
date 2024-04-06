@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import PaginationButtons from "../Utility/PaginationButtons";
 import UserContext from "../../context/UserContext";
 import axios from "axios";
+import { Box, Modal } from "@mui/material";
+import { axiosInstance } from "../Utility/axiosApiConfig";
 
 function Patients() {
   const { token } = useContext(UserContext);
+  const [openModal, setOpenModal] = useState(false);
+  const [patient, setPatient] = useState({});
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(true);
@@ -14,23 +18,45 @@ function Patients() {
   const [products, setProducts] = useState([]);
   const [tableItems, setTableItems] = useState([]);
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    boxShadow: 0,
+    p: 4,
+  };
+  const fetchData = async () => {
+    await axios
+      .get("http://localhost:8081/api/patient/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data;
+        setTableItems(data);
+        // console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getPatient = async (email) => {
+    // console.log(email);
+    await axiosInstance
+      .post("http://localhost:8081/api/patient/getPatient", { email })
+      .then((res) => {
+        setPatient(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get("http://localhost:8081/api/patient/all", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          const data = res.data;
-          setTableItems(data);
-          // console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
     fetchData();
   }, []);
 
@@ -56,7 +82,7 @@ function Patients() {
     setProducts(result);
   }, [limit, currentPage, tableItems]);
 
-  console.log(products);
+  // console.log(products);
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-0">
@@ -105,9 +131,9 @@ function Patients() {
               <tr>
                 <th className="py-3 px-1 text-center">No.</th>
                 <th className="py-3 px-6">Patients</th>
-                <th className="py-3 px-6 text-center">Name</th>
-                <th className="py-3 px-6 text-center">Mobile</th>
                 <th className="py-3 px-6 text-center">Gender</th>
+                <th className="py-3 px-6 text-center">Mobile</th>
+                <th className="py-3 px-6 text-center">Address</th>
                 <th className="py-3 px-6 text-center">Action</th>
               </tr>
             </thead>
@@ -116,7 +142,7 @@ function Patients() {
                 .filter((item) => {
                   return search.toLowerCase() === ""
                     ? item
-                    : item.title.toLowerCase().includes(search);
+                    : item.patient_Name.toLowerCase().includes(search);
                 })
                 .map((item, idx) => (
                   <tr key={idx}>
@@ -124,10 +150,10 @@ function Patients() {
                       {item.idx}
                     </td>
                     <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                      <img
+                      {/* <img
                         src={"https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?w=740&t=st=1712354001~exp=1712354601~hmac=e34ca6448ff9b9dc85632d6ef225ea5cc16f8a2c2f6b2444ca5a121752edc3a5"}
                         className="w-16 h-16 rounded-full"
-                      />
+                      /> */}
                       <div>
                         <span className="block text-gray-700 text-sm font-medium">
                           {item.patient_Name}
@@ -138,13 +164,13 @@ function Patients() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      {item.mobile_No}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
                       {item.gender}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      ₹{item.gender}/Box
+                      {item.mobile_No}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {item.address}
                     </td>
                     <td className="text-center px-6 whitespace-nowrap space-x-2 gap-1">
                       <Link
@@ -153,8 +179,14 @@ function Patients() {
                       >
                         Edit
                       </Link>
-                      <button className="py-2 leading-none px-3 font-medium border hover:border-red-500 text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
-                        Delete
+                      <button
+                        onClick={() => {
+                          setOpenModal(true);
+                          getPatient(item.email);
+                        }}
+                        className="py-2 leading-none px-3 font-medium border hover:border-green-500 text-green-600 hover:text-green-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      >
+                        View
                       </button>
                     </td>
                   </tr>
@@ -163,6 +195,61 @@ function Patients() {
           </table>
         </div>
       )}
+
+      <Modal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h1 className="text-center font-medium text-3xl">
+            Patient Information
+          </h1>
+          <div className="my-4">
+            <p className="font-medium">
+              Patient Name:{" "}
+              <span className="font-normal">{patient?.patient_Name}</span>
+            </p>
+            <p className="font-medium">
+              Email: <span className="font-normal">{patient?.email}</span>
+            </p>
+            <p className="font-medium">
+              Mobile: <span className="font-normal">{patient?.mobile_No}</span>
+            </p>
+            <p className="font-medium">
+              Gender: <span className="font-normal">{patient?.gender}</span>
+            </p>
+            <p className="font-medium">
+              Address: <span className="font-normal">{patient?.address}</span>
+            </p>
+            <p className="font-medium">Allergies:</p>
+            <ul>
+              {patient?.allergy?.map((item, idx) => (
+                <li className="list-disc ml-8" key={idx}>{item}</li>
+              ))}
+            </ul>
+            <p className="font-medium">Surgeries:</p>
+            <ul>
+              {patient?.surgeries?.map((item, idx) => (
+                <li className="list-disc ml-8" key={idx}>{item}</li>
+              ))}
+            </ul>
+  
+          </div>
+
+          <button
+            onClick={() => {
+              setOpenModal(false);
+            }}
+            className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
+          >
+            Close
+          </button>
+        </Box>
+      </Modal>
 
       <PaginationButtons
         totalPages={totalPages}

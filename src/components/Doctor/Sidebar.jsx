@@ -7,6 +7,7 @@ import {
   HiOutlineCog,
   HiOutlineLogout,
   HiOutlineQuestionMarkCircle,
+  HiOutlineUserAdd,
   HiOutlineUserCircle,
   HiOutlineUsers,
   HiOutlineViewGrid,
@@ -40,6 +41,12 @@ function Sidebar() {
       label: "Profile",
       path: `/${auth}/profile`,
       icon: <HiOutlineUserCircle />,
+    },
+    {
+      key: "addAssistant",
+      label: "Add Assistant",
+      path: `/${auth}/addAssistant`,
+      icon: <HiOutlineUserAdd />,
     },
     {
       key: "patients",
